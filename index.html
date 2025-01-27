@@ -7,7 +7,7 @@
     <!-- Link to Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Link to Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* Reset and base styles */
         * {
@@ -19,33 +19,30 @@
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
-            background-color: #f0f0f0; /* Light grey background */
-            color: #333;
             margin: 0 auto;
             max-width: 800px;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Header styles */
         header {
             text-align: center;
             margin-bottom: 40px;
-            background-color: #555; /* Grey background */
             padding: 20px;
-            border-radius: 8px;
-            color: white; /* White text */
+            border-radius: 12px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         header h1 {
-            font-size: 36px;
+            font-size: 42px;
+            font-family: 'Pacifico', cursive;
             margin-bottom: 10px;
-            color: white; /* White text */
         }
 
         header p {
             font-size: 18px;
             font-weight: 400;
-            color: #ccc; /* Light grey text */
         }
 
         /* Profile picture */
@@ -59,29 +56,23 @@
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid #555; /* Grey border */
+            border: 5px solid;
+            transition: border-color 0.3s ease;
         }
 
         /* Main content styles */
         .content {
-            background-color: #ffffff; /* White background */
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid #ddd; /* Light grey border */
+            border: 1px solid;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         .content h2 {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 10px;
-            color: #333;
-        }
-
-        .content p {
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 20px;
         }
 
         /* Contact section */
@@ -92,25 +83,106 @@
         }
 
         .contact-icons a {
-            color: #555; /* Dark grey */
-            font-size: 24px;
+            font-size: 28px;
             text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s ease;
+            margin: 0 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        .contact-icons a:hover {
-            color: #777; /* Dark grey on hover */
+        .contact-icons a span {
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Light mode styles */
+        body.light {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        body.light header {
+            background-color: #555;
+            color: white;
+        }
+
+        body.light .profile-pic img {
+            border-color: #555;
+        }
+
+        body.light .content {
+            background-color: #ffffff;
+            color: #333;
+            border-color: #ddd;
+        }
+
+        body.light .contact-icons a {
+            color: #555;
+        }
+
+        body.light .contact-icons a:hover {
+            color: #777;
+        }
+
+        /* Dark mode styles */
+        body.dark {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: #e0d7c6;
+        }
+
+        body.dark header {
+            background-color: rgba(20, 20, 20, 0.8);
+            color: #d4b483;
+        }
+
+        body.dark .profile-pic img {
+            border-color: #d4b483;
+        }
+
+        body.dark .content {
+            background: rgba(30, 30, 30, 0.9);
+            color: #e0d7c6;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark .contact-icons a {
+            color: #d4b483;
+        }
+
+        body.dark .contact-icons a:hover {
+            color: #ffffff;
+        }
+
+        /* Toggle button */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            background: #333;
         }
     </style>
 </head>
-<body>
+<body class="light">
+    <button class="toggle-button" onclick="toggleMode()">☀️</button>
     <header>
         <div class="profile-pic">
-            <img src="louai.jpg">
+            <img src="louai.jpg" alt="Profile Picture">
         </div>
         <h1>Louai OUHASSINE</h1>
-        <p>Computer Science Student </p>
+        <p>Computer Science Student</p>
     </header>
 
     <div class="content">
@@ -121,11 +193,22 @@
     <div class="content">
         <h2>Contact</h2>
         <div class="contact-icons">
-            <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCKCJDZCBMstNnLsJCcJCWhfcfNSVdnMVMNjLhnddfWHkpHMDDRhqxXPFzjcDLmJphRBfSvB"><i class="fas fa-envelope"></i>Email</a>
-            <a href="https://www.facebook.com/ouhssine.louaye/" target="_blank"><i class="fab fa-facebook"></i>Facebook</a>
-            <a href="https://www.instagram.com/ouhassinelouai/" target="_blank"><i class="fab fa-instagram"></i>Instagram</a>
-            <a href="https://www.snapchat.com/add/louaye39" target="_blank"><i class="fab fa-snapchat"></i>Snapchat</a>
+            <a href="mailto:ouhssinelouaye@gmail.com"><i class="fas fa-envelope"></i><span>Email</span></a>
+            <a href="https://www.facebook.com/ouhssine.louaye/" target="_blank"><i class="fab fa-facebook"></i><span>Facebook</span></a>
+            <a href="https://www.instagram.com/ouhassinelouai/" target="_blank"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+            <a href="https://www.snapchat.com/add/louaye39" target="_blank"><i class="fab fa-snapchat"></i><span>Snapchat</span></a>
         </div>
     </div>
+
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const toggleButton = document.querySelector('.toggle-button');
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+            toggleButton.textContent = body.classList.contains('dark') ? '🌙' : '☀️';
+        }
+    </script>
 </body>
 </html>
+
