@@ -79,6 +79,8 @@
         .contact-icons {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* Allow icons to wrap to the next line */
+            gap: 15px; /* Add space between icons */
             margin-top: 20px;
         }
 
@@ -86,13 +88,15 @@
             font-size: 28px;
             text-decoration: none;
             margin: 0 15px;
-            transition: transform 0.3s ease, color 0.3s ease;
+            text-align: center; /* Center the text under each icon */
+            width: 70px; /* Ensure consistent width for all icons */
         }
 
         .contact-icons a span {
             font-size: 14px;
             display: block;
             margin-top: 5px;
+            word-wrap: break-word; /* Wrap text if it overflows */
         }
 
         /* Light mode styles */
@@ -202,7 +206,7 @@
             <a href="https://www.facebook.com/ouhssine.louaye/" target="_blank"><i class="fab fa-facebook"></i><span>Facebook</span></a>
             <a href="https://www.instagram.com/ouhassinelouai/" target="_blank"><i class="fab fa-instagram"></i><span>Instagram</span></a>
             <a href="https://www.snapchat.com/add/louaye39" target="_blank"><i class="fab fa-snapchat"></i><span>Snapchat</span></a>
-            <a href="https://discord.com/channels/@me/Louzerk#6753" target="_blank"><i class="fab fa-discord"></i><span>Discord: Louzerk#6753</span></a>
+            <a href="https://discord.com/users/your-discord-id" target="_blank"><i class="fab fa-discord"></i><span>Discord</span></a>
         </div>
     </div>
 
