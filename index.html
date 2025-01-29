@@ -181,6 +181,37 @@
         .toggle-button:hover {
             background: #333;
         }
+        /* Sticky ad styles */
+        .ads-container {
+            position: sticky;
+            top: 20px;
+            right: 0;
+            width: 300px; /* Adjust width as needed */
+            height: auto;
+            margin-left: 20px;
+            margin-top: 20px;
+            z-index: 999;
+        }
+
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-button:hover {
+            background: #333;
+        }
     </style>
 </head>
 <body class="light">
@@ -213,7 +244,18 @@
             <a href="https://discord.com/users/your-discord-id" target="_blank"><i class="fab fa-discord"></i><span>Discord</span></a>
         </div>
     </div>
-
+     <!-- Sticky Ad -->
+    <div class="ads-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8498215028208940"
+             data-ad-slot="5273706114"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <script>
         function toggleMode() {
             const body = document.body;
