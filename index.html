@@ -550,246 +550,236 @@
     </div>
 
     <button class="toggle-button" onclick="toggleMode()">☀️</button>
-<div class="sidebar">
-    <div class="visitor-counter">👥 Total Visitors: <span id="visitorCount">0</span></div>
-
-    <div class="rating-section">
-        <h3>🌟 Share Your Experience</h3>
-        <p>How would you rate our site?</p>
-        <div class="stars" id="starContainer">
-            ★★★★★
+    <div class="sidebar">
+        <div class="visitor-counter">👥 Total Visitors: <span id="visitorCount">0</span></div>
+    
+        <div class="rating-section">
+            <h3>🌟 Share Your Experience</h3>
+            <p>How would you rate our site?</p>
+            <div class="stars" id="starContainer">
+                ★★★★★
+            </div>
+            <p><strong>Average Rating:</strong> <span id="averageRating">0</span> / 5</p>
         </div>
-        <p><strong>Average Rating:</strong> <span id="averageRating">0</span> / 5</p>
-    </div>
-
-    <div class="comment-section">
-        <h3>💬 Leave a Review</h3>
-        <input id="nameInput" class="input-box" placeholder="Your Name" />
-        <textarea id="commentInput" class="input-box" placeholder="Write your feedback..."></textarea>
-        
-        <div class="rating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-            <span id="selectedRating">0</span>/5
+    
+        <div class="comment-section">
+            <h3>💬 Leave a Review</h3>
+            <input id="nameInput" class="input-box" placeholder="Your Name" />
+            <textarea id="commentInput" class="input-box" placeholder="Write your feedback..."></textarea>
+            
+            <div class="rating">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+                <span id="selectedRating">0</span>/5
+            </div>
+    
+            <button class="submit-button" onclick="postComment()">✅ Submit Review</button>
+            <div id="comments" class="comment-list">No comments yet</div>
         </div>
-
-        <button class="submit-button" onclick="postComment()">✅ Submit Review</button>
-        <div id="comments" class="comment-list">No comments yet</div>
     </div>
-</div>
-
-<style>
-    * {
-        font-family: Arial, sans-serif;
-        box-sizing: border-box;
-    }
-
-    body.dark {
-        background-color: #121212;
-        color: white;
-    }
-
-    body.light {
-        background-color: #ffffff;
-        color: black;
-    }
-
-    .sidebar {
-        width: 90%;
-        max-width: 400px;
-        margin: auto;
-        padding: 15px;
-        border-radius: 8px;
-        background: #f8f9fa;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .input-box {
-        width: 100%;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    .rating { 
-        font-size: 24px; 
-        cursor: pointer; 
-        text-align: center;
-    }
-
-    .star { 
-        color: gray; 
-        transition: color 0.3s;
-    }
-
-    .star:hover, .star.active { 
-        color: gold; 
-    }
-
-    .comment-list {
-        margin-top: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    .comment {
-        background: white;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 10px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .comment small {
-        display: block;
-        font-size: 12px;
-        color: gray;
-    }
-
-    .submit-button {
-        background: linear-gradient(135deg, #d4b483,#d4b483);
-        color: white;
-        font-size: 16px;
-        padding: 12px 20px;
-        border-radius: 25px;
-        border: none;
-        cursor: pointer;
-        transition: 0.3s;
-        width: 100%;
-        margin-top: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .submit-button:hover {
-        background: linear-gradient(135deg, #d4b483, #d4b483);
-        transform: scale(1.05);
-    }
-
-    @media screen and (max-width: 500px) {
+    <style>
+        * {
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+    
+        body.dark {
+            background-color: #121212;
+            color: white;
+        }
+    
+        body.light {
+            background-color: #ffffff;
+            color: black;
+        }
+    
         .sidebar {
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    
+        .input-box {
             width: 100%;
             padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
-    }
-</style>
-
-<script>
-    function toggleMode() {
-        const body = document.body;
-        const toggleButton = document.querySelector('.toggle-button');
-        body.classList.toggle('dark');
-        body.classList.toggle('light');
-        toggleButton.textContent = body.classList.contains('dark') ? '🌙' : '☀️';
-        localStorage.setItem("darkMode", body.classList.contains("dark"));
-    }
-
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark");
-    }
-
-    let uniqueVisitorKey = "unique_visitor"; 
-    let visitorCountKey = "visitor_count";
-
-    if (!localStorage.getItem(uniqueVisitorKey)) {
+    
+        .rating { 
+            font-size: 24px; 
+            cursor: pointer; 
+            text-align: center;
+        }
+    
+        .star { 
+            color: gray; 
+            transition: color 0.3s;
+        }
+    
+        .star:hover, .star.active { 
+            color: gold; 
+        }
+    
+        .comment-list {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    
+        .comment {
+            background: white;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        .comment small {
+            display: block;
+            font-size: 12px;
+            color: gray;
+        }
+    
+        .submit-button {
+            background: linear-gradient(135deg, #d4b483,#d4b483);
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .submit-button:hover {
+            background: linear-gradient(135deg, #d4b483, #d4b483);
+            transform: scale(1.05);
+        }
+    
+        @media screen and (max-width: 500px) {
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+    
+    <script>
+        function toggleMode() {
+            const body = document.body;
+            const toggleButton = document.querySelector('.toggle-button');
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+            toggleButton.textContent = body.classList.contains('dark') ? '🌙' : '☀️';
+            localStorage.setItem("darkMode", body.classList.contains("dark"));
+        }
+    
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark");
+        } else {
+            document.body.classList.add("light");
+        }
+    
+        let visitorCountKey = "visitor_count";
+        let visitorDisplay = document.getElementById("visitorCount");
         let visitorCount = localStorage.getItem(visitorCountKey) || 0;
         visitorCount = parseInt(visitorCount) + 1;
         localStorage.setItem(visitorCountKey, visitorCount);
-        localStorage.setItem(uniqueVisitorKey, "true"); 
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let visitorDisplay = document.getElementById("visitorCount");
-        if (visitorDisplay) {
-            visitorDisplay.innerText = localStorage.getItem(visitorCountKey);
-        }
-        displayComments();
-        updateAverageRating();
-    });
-
-    let selectedRating = 0;
-    document.querySelectorAll(".star").forEach(star => {
-        star.addEventListener("click", function () {
-            selectedRating = parseInt(this.getAttribute("data-value"));
-            document.getElementById("selectedRating").innerText = selectedRating;
-            updateStarColors();
-        });
-    });
-
-    function updateStarColors() {
+        visitorDisplay.innerText = visitorCount;
+    
+        let selectedRating = 0;
         document.querySelectorAll(".star").forEach(star => {
-            let value = parseInt(star.getAttribute("data-value"));
-            star.classList.toggle("active", value <= selectedRating);
+            star.addEventListener("click", function () {
+                selectedRating = parseInt(this.getAttribute("data-value"));
+                document.getElementById("selectedRating").innerText = selectedRating;
+                updateStarColors();
+            });
         });
-    }
-
-    function postComment() {
-        let name = document.getElementById("nameInput").value.trim();
-        let commentText = document.getElementById("commentInput").value.trim();
-
-        if (name === "" || commentText === "" || selectedRating === 0) {
-            alert("⚠️ Please fill in all fields and select a rating!");
-            return;
+    
+        function updateStarColors() {
+            document.querySelectorAll(".star").forEach(star => {
+                let value = parseInt(star.getAttribute("data-value"));
+                star.classList.toggle("active", value <= selectedRating);
+            });
         }
-
-        let timestamp = new Date().toLocaleString();
-        let commentData = { username: name, text: commentText, rating: selectedRating, time: timestamp };
-
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        comments.push(commentData);
-        localStorage.setItem("comments", JSON.stringify(comments));
-
-        displayComments();
-        updateAverageRating();
-        document.getElementById("commentInput").value = "";
-        document.getElementById("nameInput").value = "";
-        selectedRating = 0;
-        document.getElementById("selectedRating").innerText = "0";
-        updateStarColors();
-    }
-
-    function displayComments() {
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        let commentList = document.getElementById("comments");
-        commentList.innerHTML = "";
-        if (comments.length === 0) {
-            commentList.innerText = "No comments yet";
+    
+        function postComment() {
+            let name = document.getElementById("nameInput").value.trim();
+            let commentText = document.getElementById("commentInput").value.trim();
+            if (name === "" || commentText === "" || selectedRating === 0) {
+                alert("⚠️ Please fill in all fields and select a rating!");
+                return;
+            }
+    
+            let timestamp = new Date().toLocaleString();
+            let commentData = { username: name, text: commentText, rating: selectedRating, time: timestamp };
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];
+            comments.push(commentData);
+            localStorage.setItem("comments", JSON.stringify(comments));
+            displayComments();
+            updateAverageRating();
+            document.getElementById("commentInput").value = "";
+            document.getElementById("nameInput").value = "";
+            document.getElementById("selectedRating").innerText = "0";
+            selectedRating = 0;
+            updateStarColors();
         }
-        comments.forEach(comment => {
-            let div = document.createElement("div");
-            div.classList.add("comment");
-            div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
-                <p>${comment.text}</p>
-                <p>⭐ Rating: ${comment.rating}/5</p>
-                <button class="delete-button" onclick="deleteComment('${comment.username}')">❌ Delete</button>`;
-            commentList.appendChild(div);
+    
+        function displayComments() {
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];
+            let commentList = document.getElementById("comments");
+            commentList.innerHTML = "";
+            if (comments.length === 0) {
+                commentList.innerText = "No comments yet";
+                return;
+            }
+            comments.forEach((comment, index) => {
+                let div = document.createElement("div");
+                div.classList.add("comment");
+                div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
+                    <p>${comment.text}</p>
+                    <p>⭐ Rating: ${comment.rating}/5</p>
+                    <button class="delete-button" onclick="deleteComment(${index})">❌ Delete</button>`;
+                commentList.appendChild(div);
+            });
+        }
+    
+        function deleteComment(index) {
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];
+            comments.splice(index, 1);
+            localStorage.setItem("comments", JSON.stringify(comments));
+            displayComments();
+            updateAverageRating();
+        }
+    
+        function updateAverageRating() {
+            let comments = JSON.parse(localStorage.getItem("comments")) || [];
+            if (comments.length === 0) {
+                document.getElementById("averageRating").innerText = "0";
+                return;
+            }
+            let totalRating = comments.reduce((sum, comment) => sum + comment.rating, 0);
+            let average = (totalRating / comments.length).toFixed(1);
+            document.getElementById("averageRating").innerText = average;
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            displayComments();
+            updateAverageRating();
         });
-    }
-
-    function deleteComment(username) {
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        comments = comments.filter(comment => comment.username !== username);
-        localStorage.setItem("comments", JSON.stringify(comments));
-
-        displayComments();
-        updateAverageRating();
-    }
-
-    function updateAverageRating() {
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        if (comments.length === 0) {
-            document.getElementById("averageRating").innerText = "0";
-            return;
-        }
-
-        let totalRating = comments.reduce((sum, comment) => sum + comment.rating, 0);
-        let average = (totalRating / comments.length).toFixed(1);
-        document.getElementById("averageRating").innerText = average;
-    }
-</script>
+    </script>
+    
 
     
 
