@@ -12,6 +12,9 @@
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8498215028208940"
      crossorigin="anonymous"></script>
+     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
    
     <style>
      
@@ -677,6 +680,7 @@
     </style>
     
     <script>
+        
         function toggleMode() {
             const body = document.body;
             const toggleButton = document.querySelector('.toggle-button');
@@ -714,47 +718,75 @@
                 star.classList.toggle("active", value <= selectedRating);
             });
         }
+        // Your Firebase Config (Replace with your Firebase credentials)
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
     
-        function postComment() {
-            let name = document.getElementById("nameInput").value.trim();
-            let commentText = document.getElementById("commentInput").value.trim();
-            if (name === "" || commentText === "" || selectedRating === 0) {
-                alert("⚠️ Please fill in all fields and select a rating!");
-                return;
-            }
+function postComment() {
+    let name = document.getElementById("nameInput").value.trim();
+    let commentText = document.getElementById("commentInput").value.trim();
+    if (name === "" || commentText === "" || selectedRating === 0) {
+        alert("⚠️ Please fill in all fields and select a rating!");
+        return;
+    }
+
+    let timestamp = new Date().toLocaleString();
+
+    // Save comment to Firestore
+    db.collection("comments").add({
+        username: name,
+        text: commentText,
+        rating: selectedRating,
+        time: timestamp
+    }).then(() => {
+        document.getElementById("commentInput").value = "";
+        document.getElementById("nameInput").value = "";
+        document.getElementById("selectedRating").innerText = "0";
+        selectedRating = 0;
+        updateStarColors();
+    }).catch(error => {
+        console.error("Error adding comment: ", error);
+    });
+}
+
     
-            let timestamp = new Date().toLocaleString();
-            let commentData = { username: name, text: commentText, rating: selectedRating, time: timestamp };
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            comments.push(commentData);
-            localStorage.setItem("comments", JSON.stringify(comments));
-            displayComments();
-            updateAverageRating();
-            document.getElementById("commentInput").value = "";
-            document.getElementById("nameInput").value = "";
-            document.getElementById("selectedRating").innerText = "0";
-            selectedRating = 0;
-            updateStarColors();
+function displayComments() {
+    let commentList = document.getElementById("comments");
+    commentList.innerHTML = "Loading...";
+
+    db.collection("comments").orderBy("time", "desc").onSnapshot(snapshot => {
+        commentList.innerHTML = "";
+        if (snapshot.empty) {
+            commentList.innerText = "No comments yet";
+            return;
         }
-    
-        function displayComments() {
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            let commentList = document.getElementById("comments");
-            commentList.innerHTML = "";
-            if (comments.length === 0) {
-                commentList.innerText = "No comments yet";
-                return;
-            }
-            comments.forEach((comment, index) => {
-                let div = document.createElement("div");
-                div.classList.add("comment");
-                div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
-                    <p>${comment.text}</p>
-                    <p>⭐ Rating: ${comment.rating}/5</p>
-                    <button class="delete-button" onclick="deleteComment(${index})">❌ Delete</button>`;
-                commentList.appendChild(div);
-            });
-        }
+
+        snapshot.forEach(doc => {
+            let comment = doc.data();
+            let div = document.createElement("div");
+            div.classList.add("comment");
+            div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
+                <p>${comment.text}</p>
+                <p>⭐ Rating: ${comment.rating}/5</p>`;
+            commentList.appendChild(div);
+        });
+    });
+}
+document.addEventListener("DOMContentLoaded", function () {
+    displayComments();
+});
+
     
         function deleteComment(index) {
             let comments = JSON.parse(localStorage.getItem("comments")) || [];
