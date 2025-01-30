@@ -679,8 +679,29 @@
         }
     </style>
     
-    <script>
-        
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyAUdxsfjn8l63E_ZFbjrkJ8mYrbK51jUWk",
+          authDomain: "louai-site.firebaseapp.com",
+          projectId: "louai-site",
+          storageBucket: "louai-site.firebasestorage.app",
+          messagingSenderId: "207832573578",
+          appId: "1:207832573578:web:ff46c0a1e2b928c2dd2f73",
+          measurementId: "G-SKP82M3MFE"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+      
+        // Function to toggle dark and light mode
         function toggleMode() {
             const body = document.body;
             const toggleButton = document.querySelector('.toggle-button');
@@ -689,20 +710,23 @@
             toggleButton.textContent = body.classList.contains('dark') ? '🌙' : '☀️';
             localStorage.setItem("darkMode", body.classList.contains("dark"));
         }
-    
+      
+        // Initialize dark mode from local storage
         if (localStorage.getItem("darkMode") === "true") {
             document.body.classList.add("dark");
         } else {
             document.body.classList.add("light");
         }
-    
+      
+        // Visitor count functionality
         let visitorCountKey = "visitor_count";
         let visitorDisplay = document.getElementById("visitorCount");
         let visitorCount = localStorage.getItem(visitorCountKey) || 0;
         visitorCount = parseInt(visitorCount) + 1;
         localStorage.setItem(visitorCountKey, visitorCount);
         visitorDisplay.innerText = visitorCount;
-    
+      
+        // Rating system
         let selectedRating = 0;
         document.querySelectorAll(".star").forEach(star => {
             star.addEventListener("click", function () {
@@ -711,107 +735,74 @@
                 updateStarColors();
             });
         });
-    
+      
         function updateStarColors() {
             document.querySelectorAll(".star").forEach(star => {
                 let value = parseInt(star.getAttribute("data-value"));
                 star.classList.toggle("active", value <= selectedRating);
             });
         }
-        // Your Firebase Config (Replace with your Firebase credentials)
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-    
-function postComment() {
-    let name = document.getElementById("nameInput").value.trim();
-    let commentText = document.getElementById("commentInput").value.trim();
-    if (name === "" || commentText === "" || selectedRating === 0) {
-        alert("⚠️ Please fill in all fields and select a rating!");
-        return;
-    }
-
-    let timestamp = new Date().toLocaleString();
-
-    // Save comment to Firestore
-    db.collection("comments").add({
-        username: name,
-        text: commentText,
-        rating: selectedRating,
-        time: timestamp
-    }).then(() => {
-        document.getElementById("commentInput").value = "";
-        document.getElementById("nameInput").value = "";
-        document.getElementById("selectedRating").innerText = "0";
-        selectedRating = 0;
-        updateStarColors();
-    }).catch(error => {
-        console.error("Error adding comment: ", error);
-    });
-}
-
-    
-function displayComments() {
-    let commentList = document.getElementById("comments");
-    commentList.innerHTML = "Loading...";
-
-    db.collection("comments").orderBy("time", "desc").onSnapshot(snapshot => {
-        commentList.innerHTML = "";
-        if (snapshot.empty) {
-            commentList.innerText = "No comments yet";
-            return;
-        }
-
-        snapshot.forEach(doc => {
-            let comment = doc.data();
-            let div = document.createElement("div");
-            div.classList.add("comment");
-            div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
-                <p>${comment.text}</p>
-                <p>⭐ Rating: ${comment.rating}/5</p>`;
-            commentList.appendChild(div);
-        });
-    });
-}
-document.addEventListener("DOMContentLoaded", function () {
-    displayComments();
-});
-
-    
-        function deleteComment(index) {
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            comments.splice(index, 1);
-            localStorage.setItem("comments", JSON.stringify(comments));
-            displayComments();
-            updateAverageRating();
-        }
-    
-        function updateAverageRating() {
-            let comments = JSON.parse(localStorage.getItem("comments")) || [];
-            if (comments.length === 0) {
-                document.getElementById("averageRating").innerText = "0";
+      
+        // Post a new comment to Firestore
+        function postComment() {
+            let name = document.getElementById("nameInput").value.trim();
+            let commentText = document.getElementById("commentInput").value.trim();
+            if (name === "" || commentText === "" || selectedRating === 0) {
+                alert("⚠️ Please fill in all fields and select a rating!");
                 return;
             }
-            let totalRating = comments.reduce((sum, comment) => sum + comment.rating, 0);
-            let average = (totalRating / comments.length).toFixed(1);
-            document.getElementById("averageRating").innerText = average;
+      
+            let timestamp = new Date().toLocaleString();
+      
+            // Save comment to Firestore
+            addDoc(collection(db, "comments"), {
+                username: name,
+                text: commentText,
+                rating: selectedRating,
+                time: timestamp
+            }).then(() => {
+                document.getElementById("commentInput").value = "";
+                document.getElementById("nameInput").value = "";
+                document.getElementById("selectedRating").innerText = "0";
+                selectedRating = 0;
+                updateStarColors();
+            }).catch(error => {
+                console.error("Error adding comment: ", error);
+            });
         }
+      
+        // Display comments from Firestore
+        function displayComments() {
+            let commentList = document.getElementById("comments");
+            commentList.innerHTML = "Loading...";
+      
+            const q = query(collection(db, "comments"), orderBy("time", "desc"));
+      
+            onSnapshot(q, snapshot => {
+                commentList.innerHTML = "";
+                if (snapshot.empty) {
+                    commentList.innerText = "No comments yet";
+                    return;
+                }
+      
+                snapshot.forEach(doc => {
+                    let comment = doc.data();
+                    let div = document.createElement("div");
+                    div.classList.add("comment");
+                    div.innerHTML = `<strong>${comment.username}</strong> <small>${comment.time}</small>
+                        <p>${comment.text}</p>
+                        <p>⭐ Rating: ${comment.rating}/5</p>`;
+                    commentList.appendChild(div);
+                });
+            });
+        }
+      
+        // Run displayComments on page load
         document.addEventListener("DOMContentLoaded", function () {
             displayComments();
-            updateAverageRating();
         });
-    </script>
-    
+      </script>
+      
 
     
 
