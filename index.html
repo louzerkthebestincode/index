@@ -369,178 +369,445 @@
 
 
     <style>
-        /* Improved button styles */
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            padding: 15px;
-            border: none;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        /* Common styles */
+.media-container {
+    position: relative;
+    margin: 20px 0;
+    display: none;
+    padding-bottom: 60px; /* Add space for swipe buttons at the bottom */
+}
+
+/* Swipe Navigation Buttons */
+.nav-button {
+    position: absolute;
+    font-size: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 50%;
+    background-color: #d4b483;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button:hover {
+    background-color: #c0a073;
+    transform: scale(1.1);
+}
+
+.media-container:hover .nav-button {
+    opacity: 1;
+}
+
+/* Position Swipe Buttons at the Bottom */
+#sports-prev-btn,
+#music-prev-btn {
+    left: 10px;
+    bottom: 10px; /* Position at the bottom */
+    top: auto; /* Override top positioning */
+}
+
+#sports-next-btn,
+#music-next-btn {
+    right: 10px;
+    bottom: 10px; /* Position at the bottom */
+    top: auto; /* Override top positioning */
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    background-color: #d4b483;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-button:hover {
+    background-color: #c0a073;
+    transform: scale(1.1);
+}
+
+.media-container:hover .close-button {
+    opacity: 1;
+}
+
+/* Category Buttons */
+.category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background-color: #d4b483;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.category-buttons button:hover {
+    background-color: #c0a073;
+    transform: scale(1.05);
+}
+
+.category-buttons button:active {
+    background-color: #b08c6b;
+    transform: scale(0.95);
+}
+
+/* Specific content styles */
+
+    </style>
+    <style>
+        /* Common styles */
+        .media-container {
+            position: relative;
+            margin: 20px 0;
+            display: none;
         }
     
-        #prev-btn { left: 10px; }
-        #next-btn { right: 10px; }
-        #close-btn {
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            padding: 10px;
-            background: red;
-            color: white;
-            border-radius: 50%;
-        }
-    
-        /* Show buttons on hover */
-        #video-container:hover .nav-button {
-            opacity: 1;
-        }
-    
-        /* Button hover effects */
-        .nav-button:hover {
-            background: linear-gradient(135deg, #2575fc, #6a11cb);
-            transform: translateY(-50%) scale(1.2);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.5);
-        }
-    
-        /* Video fade-in effect */
-        #music-video {
-            transition: opacity 0.5s ease-in-out;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-    
-        /* Stylish music buttons */
-        .music-buttons {
+        /* Centering Category Buttons */
+        .category-buttons {
             display: flex;
-            gap: 15px;
             justify-content: center;
+            gap: 10px;
             margin-bottom: 20px;
         }
-        .music-buttons button {
-            background: linear-gradient(135deg, #d4b483, #d4b483);
+    
+        .category-buttons button {
+            padding: 10px 20px;
             border: none;
-            color: white;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
             border-radius: 25px;
+            background-color: #d4b483;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(255, 126, 95, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-        .music-buttons button:hover {
-            background: linear-gradient(135deg, #d4b483, #d4b483);
+    
+        .category-buttons button:hover {
+            background-color: #c0a073;
             transform: scale(1.05);
         }
     
-        /* Spotify Playlist */
-        #spotify-playlist {
-            margin-top: 20px;
+        .category-buttons button:active {
+            background-color: #b08c6b;
+            transform: scale(0.95);
         }
+        /* Swipe Navigation Buttons */
+.nav-button {
+    position: absolute;
+    font-size: 24px; /* Larger size */
+    padding: 15px; /* More padding */
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #d4b483, #c0a073); /* Gradient background */
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-button:hover {
+    background: linear-gradient(45deg, #c0a073, #b08c6b); /* Darker gradient on hover */
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.nav-button.pulse {
+    animation: pulse 2s infinite; /* Continuous pulse animation */
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px; /* Larger size */
+    padding: 15px; /* More padding */
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #d4b483, #c0a073); /* Gradient background */
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background: linear-gradient(45deg, #c0a073, #b08c6b); /* Darker gradient on hover */
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */
+}
+
+/* Show buttons on hover */
+.media-container:hover .nav-button,
+.media-container:hover .close-button {
+    opacity: 1;
+}
     </style>
-    
-    <div class="content">
-        <h2>Music</h2>
-        <div class="music-buttons">
-            <button id="guitar-btn">🎸 Guitar</button>
-            <button id="piano-btn">🎹 Piano</button>
-        </div>
-    
-        <div id="video-container" style="display: none; position: relative;">
-            <button id="prev-btn" class="nav-button">⬅️</button>
-            <video id="music-video" width="100%" controls>
-                <source id="video-source" src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <button id="next-btn" class="nav-button">➡️</button>
-            <button id="close-btn" class="nav-button">✖️</button>
-        </div>
-    
-        <h2>Spotify Playlist</h2>
-        <iframe src="https://open.spotify.com/embed/playlist/6acT8lc3mOJBJfOcq8geSY?si=9d996e4bf19446f2" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+
+    <!-- Add FontAwesome to your project -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="content">
+    <h2>Sports</h2>
+    <div class="category-buttons">
+        <button id="tennis-btn">🎾 Tennis</button>
+        <button id="diving-btn">🤿 scuba diving</button>
     </div>
+
+    <div id="sports-container" class="media-container">
+        <button id="sports-prev-btn" class="nav-button pulse" style="left: 10px;">
+            <i class="fas fa-chevron-left"></i> <!-- FontAwesome icon -->
+        </button>
+        <video id="sports-video" width="100%" controls style="display: none;">
+            <source id="sports-video-source" type="video/mp4">
+        </video>
+        <img id="sports-image" src="" style="display: none; width: 100%;">
+        <button id="sports-next-btn" class="nav-button pulse" style="right: 10px;">
+            <i class="fas fa-chevron-right"></i> <!-- FontAwesome icon -->
+        </button>
+        <button id="sports-close-btn" class="close-button">
+            <i class="fas fa-times"></i> <!-- FontAwesome icon -->
+        </button>
+    </div>
+</div>
+
+<div class="content">
+    <h2>Music</h2>
+    <div class="category-buttons">
+        <button id="guitar-btn">🎸 Guitar</button>
+        <button id="piano-btn">🎹 Piano</button>
+    </div>
+
+    <div id="music-container" class="media-container">
+        <button id="music-prev-btn" class="nav-button pulse" style="left: 10px;">
+            <i class="fas fa-chevron-left"></i> <!-- FontAwesome icon -->
+        </button>
+        <video id="music-video" width="100%" controls style="display: none;">
+            <source id="music-video-source" type="video/mp4">
+        </video>
+        <img id="music-image" src="" style="display: none; width: 100%;">
+        <button id="music-next-btn" class="nav-button pulse" style="right: 10px;">
+            <i class="fas fa-chevron-right"></i> <!-- FontAwesome icon -->
+        </button>
+        <button id="music-close-btn" class="close-button">
+            <i class="fas fa-times"></i> <!-- FontAwesome icon -->
+        </button>
+    </div>
+    <h2 style="margin-top: 30px;">Spotify Playlist</h2>
+    <iframe src="https://open.spotify.com/embed/playlist/6acT8lc3mOJBJfOcq8geSY?si=9d996e4bf19446f2" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+</div>
     
     <script>
-        const media = {
-            guitar: [
-                { type: "video", src: "guitar.mp4" }
-            ],
-            piano: [
-                { type: "video", src: "piano9omtara.mp4" },
-                { type: "video", src: "pianolovestory.mp4" }
-            ]
-        };
-        let currentMedia = [], currentIndex = 0;
+    document.addEventListener("DOMContentLoaded", () => {
+        const mediaData = {
+    sports: {
+        tennis: [
+            { type: "image", src: "pictennis1.jpg" },
+            { type: "image", src: "pictennis2.jpg" },
+            { type: "video", src: "tennisvideo2.mp4"},
+            { type: "video", src: "tennisvideo1.mp4" }
+        ],
+        diving: [
+            { type: "image", src: "picplonge2.jpg" },
+            { type: "image", src: "picplonge3.jpg" },
+            { type: "image", src: "picploge4.jpg" },
+            { type: "video", src: "picplonge.mp4" }
+        ]
+    },
+    music: {
+        guitar: [
+            { type: "video", src: "guitar.mp4" }
+        ],
+        piano: [
+            { type: "video", src: "piano9omtara.mp4" },
+            { type: "video", src: "pianolovestory.mp4" }
+        ]
+    }
+};
     
-        document.getElementById("guitar-btn").addEventListener("click", () => showMedia("guitar"));
-        document.getElementById("piano-btn").addEventListener("click", () => showMedia("piano"));
-        document.getElementById("prev-btn").addEventListener("click", () => changeMedia(-1));
-        document.getElementById("next-btn").addEventListener("click", () => changeMedia(1));
-        document.getElementById("close-btn").addEventListener("click", closeVideo);
+        class MediaManager {
+            constructor(category) {
+                this.category = category;
+                this.currentIndex = 0;
+                this.mediaList = [];
+                this.container = document.getElementById(`${category}-container`);
+                this.videoElement = document.getElementById(`${category}-video`);
+                this.imageElement = document.getElementById(`${category}-image`);
+            }
     
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft") changeMedia(-1);
-            if (event.key === "ArrowRight") changeMedia(1);
-            if (event.key === "Escape") closeVideo();
-        });
+            loadMedia(list) {
+    console.log(`Loading media for ${this.category}:`, list);
+    this.mediaList = list;
+    this.currentIndex = 0;
+    this.showMedia();
+    this.container.style.display = 'block';
+}
     
-        function showMedia(instrument) {
-            currentMedia = media[instrument];
-            currentIndex = 0;
-            document.getElementById("video-container").style.display = "flex";
-            updateMedia();
+            showMedia() {
+    const media = this.mediaList[this.currentIndex];
+    console.log(`Showing media:`, media);
+    
+    if (media.type === 'video') {
+        this.videoElement.style.display = 'block';
+        this.imageElement.style.display = 'none';
+        this.videoElement.src = media.src;
+        this.videoElement.load();
+        console.log(`Video source set to:`, this.videoElement.src);
+    } else {
+        this.imageElement.style.display = 'block';
+        this.videoElement.style.display = 'none';
+        this.imageElement.src = media.src;
+        console.log(`Image source set to:`, this.imageElement.src);
+    }
+}
+    
+            navigate(direction) {
+                this.currentIndex = (this.currentIndex + direction + this.mediaList.length) % this.mediaList.length;
+                this.showMedia();
+            }
+    
+            close() {
+                this.container.style.display = 'none';
+            }
         }
     
-        function changeMedia(direction) {
-            currentIndex = (currentIndex + direction + currentMedia.length) % currentMedia.length;
-            updateMedia();
-        }
+        // Initialisation des gestionnaires
+        const sportsManager = new MediaManager('sports');
+        const musicManager = new MediaManager('music');
     
-        function updateMedia() {
-            const videoElement = document.getElementById("music-video");
-            videoElement.style.opacity = 0;
-            setTimeout(() => {
-                document.getElementById("video-source").src = currentMedia[currentIndex].src;
-                videoElement.load();
-                videoElement.style.opacity = 1;
-            }, 300);
-        }
+        // Gestion des événements
+        document.getElementById('tennis-btn').addEventListener('click', () => 
+            sportsManager.loadMedia(mediaData.sports.tennis));
+        document.getElementById('diving-btn').addEventListener('click', () => 
+            sportsManager.loadMedia(mediaData.sports.diving));
     
-        function closeVideo() {
-            document.getElementById("video-container").style.display = "none";
-            document.getElementById("video-source").src = "";
-        }
+        document.getElementById('guitar-btn').addEventListener('click', () => 
+            musicManager.loadMedia(mediaData.music.guitar));
+        document.getElementById('piano-btn').addEventListener('click', () => 
+            musicManager.loadMedia(mediaData.music.piano));
+    
+        // Navigation
+        document.getElementById('sports-prev-btn').addEventListener('click', () => sportsManager.navigate(-1));
+        document.getElementById('sports-next-btn').addEventListener('click', () => sportsManager.navigate(1));
+        document.getElementById('music-prev-btn').addEventListener('click', () => musicManager.navigate(-1));
+        document.getElementById('music-next-btn').addEventListener('click', () => musicManager.navigate(1));
+    
+        // Fermeture
+        document.getElementById('sports-close-btn').addEventListener('click', () => sportsManager.close());
+        document.getElementById('music-close-btn').addEventListener('click', () => musicManager.close());
+    });
     </script>
     
 
-    <div class="content">
-        <h2>Countries I Traveled</h2>
+    <script>
+        // Add this JavaScript code
+        const countryImages = {
+            France: [
+                "picparistour.jpg",
+                "paris2.jpg",
+                "marsseille1.jpg",
+                "marseille2.jpg",
+                "marseille3.jpg",
+                "picparis7ot.jpg",
 
-        <div class="flags">
-            <img src="https://flagcdn.com/fr.svg" alt="France" class="flag" onclick="showGallery('France')">
-            <img src="https://flagcdn.com/es.svg" alt="Spain" class="flag" onclick="showGallery('Spain')">
-            <img src="https://flagcdn.com/de.svg" alt="Germany" class="flag" onclick="showGallery('Germany')">
-            <img src="https://flagcdn.com/tn.svg" alt="Tunisia" class="flag" onclick="showGallery('Tunisia')">
+            ],
+            Spain: [
+                "spainpic.jpg",
+            ],
+            
+        };
+        
+        let currentCountry = null;
+        let currentIndex = 0;
+        
+        function showGallery(country) {
+            currentCountry = country;
+            currentIndex = 0;
+            document.getElementById('gallery').style.display = 'block';
+            updateGalleryImage();
+        }
+        
+        function closeGallery() {
+            document.getElementById('gallery').style.display = 'none';
+        }
+        
+        function updateGalleryImage() {
+            const img = document.getElementById('gallery-image');
+            img.src = countryImages[currentCountry][currentIndex];
+        }
+        
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + countryImages[currentCountry].length) % countryImages[currentCountry].length;
+            updateGalleryImage();
+        }
+        
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % countryImages[currentCountry].length;
+            updateGalleryImage();
+        }
+
+    
+        </script>
+        
+        <div class="content">
+            <h2>Countries I Traveled</h2>
+            <div class="flags">
+                <img src="https://flagcdn.com/fr.svg" alt="France" class="flag" onclick="showGallery('France')">
+                <img src="https://flagcdn.com/es.svg" alt="Spain" class="flag" onclick="showGallery('Spain')">
+                <img src="https://flagcdn.com/de.svg" alt="Germany" class="flag" onclick="showGallery('Germany')">
+                <img src="https://flagcdn.com/tn.svg" alt="Tunisia" class="flag" onclick="showGallery('Tunisia')">
+            </div>
+            <div id="gallery" class="gallery" style="display: none;">
+                <button class="close-btn" onclick="closeGallery()">X</button>
+                <button class="nav-btn" onclick="prevImage()">⬅️</button>
+                <img id="gallery-image" src="" alt="Gallery Image">
+                <button class="nav-btn" onclick="nextImage()">➡️</button>
+            </div>
         </div>
-        <div id="gallery" class="gallery" style="display: none;">
-            <button class="close-btn" onclick="closeGallery()">X</button>
-            <button class="nav-btn" onclick="prevImage()">⬅️</button>
-            <img id="gallery-image" src="" alt="Gallery Image">
-            <button class="nav-btn" onclick="nextImage()">➡️</button>
-        </div>
-    </div>
+        
+
+    
     <div class="content">
         <h2>Contact</h2>
         <div class="contact-icons">
